@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ReWear - List Your Item</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* CSS Variables for consistent theming */
+    :root {
+      --primary-bg: #FFFFFF;
+      --secondary-bg: #F8F9FA; /* A very light, almost white background */
+      --accent-green: #28A745; /* A vibrant, but professional green */
+      --accent-green-hover: #218838;
+      --accent-blue: #007BFF; /* For specific CTAs if needed */
+      --accent-blue-hover: #0069D9;
+      --text-dark: #212529; /* Darker text for readability */
+      --text-medium: #495057;
+      --text-light: #6C757D;
+      --nav-bg: #343A40; /* Darker header background */
+      --nav-text: #F8F9FA;
+      --border-light: #E9ECEF;
+      --shadow-light: rgba(0, 0, 0, 0.05);
+      --shadow-medium: rgba(0, 0, 0, 0.1);
+      --success-color: #28A745; /* For messages */
+      --error-color: #DC3545;   /* For messages */
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--secondary-bg);
+      color: var(--text-medium);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* --- Header --- */
+    header {
+      background-color: var(--nav-bg);
+      color: var(--nav-text);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      box-shadow: 0 2px 5px var(--shadow-light);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--accent-green);
+      letter-spacing: -0.5px;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      margin-right: 20px;
+    }
+
+    .logo:hover {
+      color: var(--accent-green-hover);
+    }
+
+    nav {
+      flex-grow: 1;
+      display: flex;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      margin-left: 25px;
+      color: var(--nav-text);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 16px;
+      transition: color 0.3s ease, transform 0.2s ease;
+      position: relative;
+      padding: 5px 0;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -5px;
+      left: 0;
+      background-color: var(--accent-green);
+      transition: width 0.3s ease-in-out;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    nav a:hover {
+      color: var(--accent-green);
+      transform: translateY(-2px);
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      position: relative;
+      margin-left: auto;
+    }
+
+    .search-box input {
+      padding: 10px 15px;
+      padding-right: 40px;
+      border-radius: 8px;
+      border: 1px solid var(--border-light);
+      background-color: var(--primary-bg);
+      color: var(--text-dark);
+      outline: none;
+      width: 250px;
+      font-size: 16px;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .search-box input::placeholder {
+      color: var(--text-light);
+    }
+
+    .search-box input:focus {
+      border-color: var(--accent-green);
+      box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.2);
+    }
+
+    .search-icon {
+      position: absolute;
+      right: 15px;
+      color: var(--text-medium);
+      font-size: 18px;
+      pointer-events: none;
+    }
+
+    /* --- Main Content --- */
+    main {
+      flex-grow: 1;
+      padding: 50px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 1200px;
+      width: 100%;
+      margin: auto;
+      padding: 0 20px;
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .page-header h2 {
+      font-size: 38px;
+      color: var(--text-dark);
+      font-weight: 700;
+      position: relative;
+      padding-bottom: 15px; /* Space for underline */
+    }
+
+    .page-header h2::after {
+      content: '';
+      position: absolute;
+      width: 80px;
+      height: 4px;
+      background-color: var(--accent-green);
+      left: 0;
+      bottom: 0;
+      border-radius: 2px;
+    }
+
+    .main-section {
+      display: flex;
+      gap: 30px; /* Space between upload and description boxes */
+      margin-bottom: 40px;
+      flex-wrap: wrap; /* Allow wrapping on small screens */
+    }
+
+    .form-box {
+      background-color: var(--primary-bg);
+      border-radius: 12px;
+      padding: 30px;
+      flex: 1;
+      min-width: 300px; /* Minimum width for each box */
+      box-shadow: 0 10px 25px var(--shadow-light);
+      text-align: left;
+    }
+
+    .form-box h3 {
+      font-size: 24px;
+      color: var(--text-dark);
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    .form-box input[type="file"] {
+      display: block;
+      margin-top: 15px;
+      padding: 10px 0;
+      font-size: 16px;
+      color: var(--text-medium);
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      background-color: var(--secondary-bg);
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .form-box input[type="file"]::file-selector-button {
+      background-color: var(--accent-green);
+      color: var(--primary-bg);
+      border: none;
+      padding: 8px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-right: 10px;
+    }
+
+    .form-box input[type="file"]::file-selector-button:hover {
+      background-color: var(--accent-green-hover);
+    }
+
+    .form-box textarea {
+      width: 100%;
+      height: 180px;
+      padding: 15px;
+      background-color: var(--secondary-bg);
+      color: var(--text-dark);
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      resize: vertical; /* Allow vertical resizing */
+      font-size: 16px;
+      line-height: 1.5;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .form-box textarea::placeholder {
+      color: var(--text-light);
+    }
+
+    .form-box textarea:focus {
+      outline: none;
+      border-color: var(--accent-green);
+      box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.2);
+    }
+
+    .toggle-button {
+      background: var(--accent-green);
+      color: var(--primary-bg);
+      border: none;
+      border-radius: 25px; /* More rounded pill shape */
+      padding: 12px 25px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      float: right; /* Keep it right aligned */
+      margin-top: 20px; /* More space */
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 10px rgba(40, 167, 69, 0.2);
+    }
+
+    .toggle-button:hover {
+      background: var(--accent-green-hover);
+      box-shadow: 0 6px 15px rgba(40, 167, 69, 0.3);
+    }
+
+    .toggle-button.inactive {
+      background: var(--error-color); /* Red for inactive */
+      box-shadow: 0 4px 10px rgba(220, 53, 69, 0.2);
+    }
+
+    .toggle-button.inactive:hover {
+      background: #bd2130; /* Darker red on hover */
+      box-shadow: 0 6px 15px rgba(220, 53, 69, 0.3);
+    }
+
+    .listings-section {
+      margin-top: 40px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .listings-section h3 {
+      font-size: 32px;
+      color: var(--text-dark);
+      margin-bottom: 40px;
+      font-weight: 700;
+      position: relative;
+    }
+
+    .listings-section h3::after {
+      content: '';
+      position: absolute;
+      width: 80px;
+      height: 4px;
+      background-color: var(--accent-green);
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: -15px;
+      border-radius: 2px;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Larger grid items */
+      gap: 25px; /* More space */
+      justify-content: center;
+    }
+
+    .card {
+      background-color: var(--primary-bg);
+      border-radius: 12px;
+      box-shadow: 0 4px 10px var(--shadow-light);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 15px var(--shadow-medium);
+    }
+
+    .card img {
+      width: 100%;
+      height: 150px; /* Fixed height for image */
+      object-fit: cover;
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+    }
+
+    .card-details {
+      padding: 15px;
+    }
+
+    .card-details .title {
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 5px;
+      font-size: 16px;
+    }
+
+    .card-details .status {
+      color: var(--accent-green);
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    /* --- Footer --- */
+    footer {
+      background-color: var(--nav-bg);
+      color: var(--nav-text);
+      padding: 40px 20px;
+      text-align: center;
+      font-size: 15px;
+      border-top: 1px solid #444;
+      margin-top: auto;
+    }
+
+    footer .footer-links {
+      margin-bottom: 20px;
+    }
+
+    footer .footer-links a {
+      color: var(--nav-text);
+      text-decoration: none;
+      margin: 0 15px;
+      transition: color 0.3s ease;
+    }
+
+    footer .footer-links a:hover {
+      color: var(--accent-green);
+    }
+
+    /* --- Responsive Adjustments --- */
+    @media (max-width: 992px) {
+      header {
+        padding: 15px 30px;
+      }
+      nav a {
+        margin-left: 20px;
+      }
+      .search-box input {
+        width: 200px;
+      }
+      .container {
+        padding: 0 15px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px 20px;
+      }
+      .logo {
+        margin-bottom: 10px;
+      }
+      nav {
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 15px;
+      }
+      nav a {
+        margin: 5px 10px;
+      }
+      .search-box {
+        width: 100%;
+        margin-left: 0;
+        justify-content: center;
+      }
+      .search-box input {
+        width: 100%;
+        max-width: 300px;
+      }
+      main {
+        padding: 30px 15px;
+      }
+      .page-header h2 {
+        font-size: 30px;
+        padding-bottom: 10px;
+      }
+      .page-header h2::after {
+        width: 60px;
+      }
+      .main-section {
+        flex-direction: column;
+        gap: 20px;
+      }
+      .form-box {
+        padding: 25px;
+        min-width: unset;
+      }
+      .form-box h3 {
+        font-size: 20px;
+      }
+      .form-box input[type="file"],
+      .form-box textarea {
+        font-size: 15px;
+      }
+      .toggle-button {
+        padding: 10px 20px;
+        font-size: 15px;
+      }
+      .listings-section h3 {
+        font-size: 26px;
+        margin-bottom: 30px;
+      }
+      .listings-section h3::after {
+        width: 60px;
+        bottom: -10px;
+      }
+      .card-grid {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 15px;
+      }
+      .card img {
+        height: 120px;
+      }
+      .card-details .title {
+        font-size: 14px;
+      }
+      .card-details .status {
+        font-size: 12px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header {
+        padding: 10px 15px;
+      }
+      .logo {
+        font-size: 24px;
+      }
+      .search-box input {
+        padding: 8px 12px;
+        padding-right: 35px;
+        font-size: 14px;
+      }
+      .search-icon {
+        font-size: 16px;
+        right: 12px;
+      }
+      main {
+        padding: 20px 10px;
+      }
+      .page-header h2 {
+        font-size: 24px;
+      }
+      .form-box {
+        padding: 20px;
+      }
+      .form-box h3 {
+        font-size: 18px;
+      }
+      .form-box input[type="file"]::file-selector-button {
+        padding: 6px 12px;
+        font-size: 14px;
+      }
+      .toggle-button {
+        padding: 8px 15px;
+        font-size: 14px;
+      }
+      .listings-section h3 {
+        font-size: 22px;
+        margin-bottom: 25px;
+      }
+      .card-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+      .card img {
+        height: 100px;
+      }
+      .card-details {
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <a href="landing.html" class="logo">👕 ReWear</a>
+    <nav>
+      <a href="item_listing.html">Home</a>
+     
+      <a href="product_detail.html">How it Works</a>
+      <a href="dashboard.html">About Us</a>
+      <a href="admin-panel.html">Testimonials</a>
+      
+      <a href="login.html">Login</a>
+      <a href="register.html">Sign Up</a>
+    </nav>
+    <div class="search-box">
+      <input type="text" placeholder="Search items...">
+      <span class="search-icon">🔍</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="page-header">
+        <h2>List Your Item</h2>
+        <!-- Search bar moved to header for consistency across pages -->
+      </div>
+
+      <div class="main-section">
+        <!-- Image Upload -->
+        <div class="form-box upload-box">
+          <h3>Add Images</h3>
+          <input type="file" multiple accept="image/*" />
+        </div>
+
+        <!-- Description & Status -->
+        <div class="form-box description-box">
+          <h3>Product Details</h3>
+          <textarea placeholder="Describe your product here: Brand, Size, Condition, Material, etc."></textarea>
+          <button class="toggle-button" id="swapToggle">Available for Swap</button>
+        </div>
+      </div>
+
+      <!-- Previous Listings -->
+      <div class="listings-section">
+        <h3>My Previous Listings</h3>
+        <div class="card-grid" id="previousListingsGrid">
+          <!-- Cards will be injected here via JS -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-links">
+      <a href="#">About Us</a>
+      <a href="#">Contact</a>
+      <a href="#">FAQ</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Privacy Policy</a>
+    </div>
+    <p>&copy; 2025 ReWear. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const toggleBtn = document.getElementById("swapToggle");
+    let isAvailable = true; // Initial state
+
+    toggleBtn.addEventListener("click", () => {
+      isAvailable = !isAvailable;
+      toggleBtn.textContent = isAvailable ? "Available for Swap" : "Not Available";
+      toggleBtn.classList.toggle("inactive", !isAvailable); // Add/remove 'inactive' class based on state
+      console.log(`Item is now: ${isAvailable ? "Available" : "Not Available"}`);
+    });
+
+    // Dynamically generate previous listings
+    const previousListingsData = [
+      { title: "Vintage Denim Jacket", img: "https://m.media-amazon.com/images/I/81Ko4mfS+AL._AC_UL480_FMwebp_QL65_.jpg", status: "Active" },
+      { title: "Floral Midi Dress", img: "https://m.media-amazon.com/images/I/61K-T-ixafL._AC_UL480_FMwebp_QL65_.jpg", status: "Swapped" },
+      { title: "Casual White Sneakers", img: "https://m.media-amazon.com/images/I/71-fEKIBHtL._AC_UL480_FMwebp_QL65_.jpg", status: "Pending" },
+      { title: "Knitted Winter Scarf", img: "https://m.media-amazon.com/images/I/81OxmjdgBjL._AC_UL480_FMwebp_QL65_.jpg", status: "Active" },
+      { title: "Graphic T-Shirt", img: "https://m.media-amazon.com/images/I/71ScExmVg6L._AC_UL480_FMwebp_QL65_.jpg", status: "Swapped" }
+    ];
+
+    function renderPreviousListings(items, containerId) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = ''; // Clear previous content
+      items.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <img src="${item.img}" alt="${item.title}">
+          <div class="card-details">
+            <div class="title">${item.title}</div>
+            <div class="status">${item.status}</div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Render items on page load
+    renderPreviousListings(previousListingsData, 'previousListingsGrid');
+  </script>
+
+</body>
+</html>

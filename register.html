@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - ReWear</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* --- Color Variables for ReWear Light Theme --- */
+    :root {
+      /* Primary Backgrounds */
+      --primary-bg: #FFFFFF; /* Pure white for main content areas (register box, cards) */
+      --secondary-bg: #F0F2F5; /* Very light gray for body background and subtle sections */
+
+      /* Text Colors */
+      --text-dark: #222222; /* Near black for headings and primary text (high contrast) */
+      --text-medium: #555555; /* Medium gray for body text and general information */
+      --text-light: #888888; /* Lighter gray for placeholder text and subtle details */
+
+      /* Accent Colors - NOW GREEN */
+      --accent-green: #28A745; /* Vibrant green for main interactive elements (buttons, links, logo) */
+      --accent-green-hover: #218838; /* Slightly darker green for hover states */
+      --accent-blue: #007BFF; /* Keeping blue variable but not using it for main accents now */
+      --accent-blue-hover: #0069D9;
+
+      /* Borders & Shadows */
+      --border-light: #E0E0E0; /* Light gray for subtle borders around elements */
+      --shadow-light: rgba(0, 0, 0, 0.08); /* Soft, subtle shadow for depth */
+      --shadow-medium: rgba(0, 0, 0, 0.15); /* Slightly more pronounced shadow on hover */
+
+      /* Navigation Bar Colors */
+      --nav-bg: #343A40; /* Dark background for the header/footer for contrast */
+      --nav-text: #F8F9FA; /* Off-white text for navigation links */
+
+      /* Status/Message Colors */
+      --success-green: #28A745; /* Green for successful actions/messages */
+      --error-red: #DC3545; /* Red for error messages */
+    }
+
+    /* General Body Styling */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--secondary-bg);
+      color: var(--text-medium);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column; /* Allows header/footer to stick and content to grow */
+    }
+
+    /* --- Header (Consistent across all pages) --- */
+    header {
+      background-color: var(--nav-bg);
+      color: var(--nav-text);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      box-shadow: 0 2px 5px var(--shadow-light);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--accent-green); /* Logo color from accent-green */
+      letter-spacing: -0.5px;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      margin-right: 20px;
+    }
+
+    .logo:hover {
+      color: var(--accent-green-hover);
+    }
+
+    nav {
+      flex-grow: 1;
+      display: flex;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      margin-left: 25px;
+      color: var(--nav-text);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 16px;
+      transition: color 0.3s ease, transform 0.2s ease;
+      position: relative;
+      padding: 5px 0;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -5px;
+      left: 0;
+      background-color: var(--accent-green);
+      transition: width 0.3s ease-in-out;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    nav a:hover {
+      color: var(--accent-green);
+      transform: translateY(-2px);
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      position: relative;
+      margin-left: auto;
+    }
+
+    .search-box input {
+      padding: 10px 15px;
+      padding-right: 40px;
+      border-radius: 8px;
+      border: 1px solid var(--border-light);
+      background-color: var(--primary-bg);
+      color: var(--text-dark);
+      outline: none;
+      width: 250px;
+      font-size: 16px;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .search-box input::placeholder {
+      color: var(--text-light);
+    }
+
+    .search-box input:focus {
+      border-color: var(--accent-green); /* Consistent focus color */
+      box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.2);
+    }
+
+    .search-icon {
+      position: absolute;
+      right: 15px;
+      color: var(--text-medium);
+      font-size: 18px;
+      pointer-events: none;
+    }
+
+    /* --- Main Content Area for Registration Form --- */
+    main {
+      flex-grow: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .register-container {
+      background-color: var(--primary-bg);
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      padding: 40px;
+      text-align: center;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 10px 25px var(--shadow-light);
+      animation: fadeIn 0.8s ease-out;
+      transform: translateY(0);
+      transition: box-shadow 0.3s ease;
+    }
+
+    .register-container:hover {
+      box-shadow: 0 12px 30px var(--shadow-medium);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      color: var(--text-dark);
+      margin-bottom: 30px;
+      font-weight: 700;
+      font-size: 28px;
+    }
+
+    .logo-placeholder {
+      width: 90px;
+      height: 90px;
+      background-color: var(--accent-green); /* Logo placeholder color now green */
+      border-radius: 50%;
+      margin: 0 auto 35px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 36px;
+      color: var(--primary-bg);
+      font-weight: 600;
+      box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3); /* Shadow adjusted for green */
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .logo-placeholder:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 15px rgba(40, 167, 69, 0.4); /* Shadow adjusted for green */
+    }
+
+    input {
+      width: calc(100% - 24px);
+      padding: 14px 12px;
+      margin: 10px 0; /* Slightly reduced margin for more fields */
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      background-color: var(--primary-bg);
+      color: var(--text-dark);
+      font-size: 16px;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    input::placeholder {
+      color: var(--text-light);
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--accent-green); /* Focus border now green */
+      box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.2); /* Focus shadow now green */
+    }
+
+    .btn {
+      width: 100%;
+      padding: 15px;
+      background-color: var(--accent-green); /* Button color now green */
+      color: var(--primary-bg);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 25px;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: var(--accent-green-hover); /* Button hover now darker green */
+      transform: translateY(-2px);
+      box-shadow: 0 8px 18px rgba(40, 167, 69, 0.3); /* Button shadow now green */
+    }
+
+    .btn:active {
+      transform: translateY(0);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .link-group {
+        margin-top: 20px;
+    }
+
+    .link-group a {
+      display: inline-block;
+      margin: 0 10px;
+      color: var(--accent-green); /* Link color now green */
+      font-size: 15px;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      font-weight: 500;
+    }
+
+    .link-group a:hover {
+      color: var(--accent-green-hover); /* Link hover now darker green */
+      text-decoration: underline;
+    }
+
+    .message {
+      font-size: 15px;
+      margin-top: 25px;
+      min-height: 20px;
+      font-weight: 500;
+      color: var(--text-medium); /* Default message color */
+    }
+
+    /* --- Footer (Consistent across all pages) --- */
+    footer {
+      background-color: var(--nav-bg);
+      color: var(--nav-text);
+      padding: 40px 20px;
+      text-align: center;
+      font-size: 15px;
+      border-top: 1px solid #444;
+      margin-top: auto;
+    }
+
+    footer .footer-links {
+      margin-bottom: 20px;
+    }
+
+    footer .footer-links a {
+      color: var(--nav-text);
+      text-decoration: none;
+      margin: 0 15px;
+      transition: color 0.3s ease;
+    }
+
+    footer .footer-links a:hover {
+      color: var(--accent-green); /* Footer link hover color from accent-green */
+    }
+
+
+    /* --- Responsive Adjustments --- */
+    @media (max-width: 992px) {
+      header {
+        padding: 15px 30px;
+      }
+      nav a {
+        margin-left: 20px;
+      }
+      .search-box input {
+        width: 200px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px 20px;
+      }
+      .logo {
+        margin-bottom: 10px;
+      }
+      nav {
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 15px;
+      }
+      nav a {
+        margin: 5px 10px;
+      }
+      .search-box {
+        width: 100%;
+        margin-left: 0;
+        justify-content: center;
+      }
+      .search-box input {
+        width: 100%;
+        max-width: 300px;
+      }
+      .register-container {
+        padding: 30px 20px;
+        margin: 10px;
+      }
+      h2 {
+        font-size: 24px;
+        margin-bottom: 25px;
+      }
+      .logo-placeholder {
+        width: 70px;
+        height: 70px;
+        font-size: 30px;
+        margin-bottom: 25px;
+      }
+      input {
+        padding: 12px 10px;
+        margin: 8px 0;
+      }
+      .btn {
+        padding: 13px;
+        font-size: 16px;
+      }
+      .link-group a {
+          display: block;
+          margin: 10px 0;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header {
+        padding: 10px 15px;
+      }
+      .logo {
+        font-size: 24px;
+      }
+      .search-box input {
+        padding: 8px 12px;
+        padding-right: 35px;
+        font-size: 14px;
+      }
+      .search-icon {
+        font-size: 16px;
+        right: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <a href="landing.html" class="logo">👕 ReWear</a>
+    <nav>
+      <a href="item_listing.html">Home</a>
+     
+      <a href="product_detail.html">How it Works</a>
+      <a href="dashboard.html">About Us</a>
+      <a href="admin-panel.html">Testimonials</a>
+      
+      <a href="login.html">Login</a>
+      <a href="register.html">Sign Up</a>
+    
+    </nav>
+    <div class="search-box">
+      <input type="text" placeholder="Search items...">
+      <span class="search-icon">🔍</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="register-container">
+      <h2>Join ReWear Today!</h2>
+      <div class="logo-placeholder">RW</div>
+      <input type="text" id="name" placeholder="Full Name">
+      <input type="email" id="email" placeholder="Email Address">
+      <input type="text" id="regUsername" placeholder="Create Username">
+      <input type="password" id="regPassword" placeholder="Create Password">
+      <button class="btn" onclick="register()">Register</button>
+      <div class="link-group">
+          <a href="login.html" class="login-link">Already have an account? Login</a>
+      </div>
+      <div class="message" id="registerMsg"></div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-links">
+      <a href="#">About Us</a>
+      <a href="#">Contact</a>
+      <a href="#">FAQ</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Privacy Policy</a>
+    </div>
+    <p>&copy; 2025 ReWear. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function register() {
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const username = document.getElementById("regUsername").value.trim();
+      const password = document.getElementById("regPassword").value.trim();
+      const msg = document.getElementById("registerMsg");
+
+      // Reset message style
+      msg.style.color = 'var(--text-medium)';
+
+      if (name === "" || email === "" || username === "" || password === "") {
+        msg.textContent = "Please fill in all fields.";
+        msg.style.color = 'var(--error-red)';
+      } else {
+        // Basic email format validation (can be more robust)
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          msg.textContent = "Please enter a valid email address.";
+          msg.style.color = 'var(--error-red)';
+          return; // Stop function if email is invalid
+        }
+
+        // Password strength validation (basic example)
+        if (password.length < 6) {
+          msg.textContent = "Password must be at least 6 characters long.";
+          msg.style.color = 'var(--error-red)';
+          return; // Stop function if password is too short
+        }
+
+        msg.textContent = "Registration successful! You can now log in.";
+        msg.style.color = 'var(--success-green)';
+
+        // In a real application, you'd send this data to a server for registration.
+        // For demonstration, we'll just show a success message.
+        setTimeout(() => {
+            // Optionally redirect to login page or dashboard after successful registration
+            // window.location.href = "login.html";
+            console.log("Simulating user registration and success message.");
+            // Clear fields after successful registration
+            document.getElementById("name").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("regUsername").value = "";
+            document.getElementById("regPassword").value = "";
+        }, 1500);
+      }
+    }
+  </script>
+
+</body>
+</html>

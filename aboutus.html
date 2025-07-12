@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us - ReWear</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* --- Color Variables for ReWear Light Theme --- */
+    :root {
+      /* Primary Backgrounds */
+      --primary-bg: #FFFFFF; /* Pure white for main content areas */
+      --secondary-bg: #F0F2F5; /* Very light gray for body background and subtle sections */
+
+      /* Text Colors */
+      --text-dark: #222222; /* Near black for headings and primary text (high contrast) */
+      --text-medium: #555555; /* Medium gray for body text and general information */
+      --text-light: #888888; /* Lighter gray for placeholder text and subtle details */
+
+      /* Accent Colors - NOW GREEN */
+      --accent-green: #28A745; /* Vibrant green for main interactive elements (buttons, links, logo) */
+      --accent-green-hover: #218838; /* Slightly darker green for hover states */
+      --accent-blue: #007BFF; /* Keeping blue variable but not using it for main accents now */
+      --accent-blue-hover: #0069D9;
+
+      /* Borders & Shadows */
+      --border-light: #E0E0E0; /* Light gray for subtle borders around elements */
+      --shadow-light: rgba(0, 0, 0, 0.08); /* Soft, subtle shadow for depth */
+      --shadow-medium: rgba(0, 0, 0, 0.15); /* Slightly more pronounced shadow on hover */
+
+      /* Navigation Bar Colors */
+      --nav-bg: #343A40; /* Dark background for the header/footer for contrast */
+      --nav-text: #F8F9FA; /* Off-white text for navigation links */
+
+      /* Status/Message Colors */
+      --success-green: #28A745; /* Green for successful actions/messages */
+      --error-red: #DC3545; /* Red for error messages */
+    }
+
+    /* General Body Styling */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--secondary-bg);
+      color: var(--text-medium);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column; /* Allows header/footer to stick and content to grow */
+    }
+
+    /* --- Header (Consistent across all pages) --- */
+    header {
+      background-color: var(--nav-bg);
+      color: var(--nav-text);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      box-shadow: 0 2px 5px var(--shadow-light);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--accent-green);
+      letter-spacing: -0.5px;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      margin-right: 20px;
+    }
+
+    .logo:hover {
+      color: var(--accent-green-hover);
+    }
+
+    nav {
+      flex-grow: 1;
+      display: flex;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      margin-left: 25px;
+      color: var(--nav-text);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 16px;
+      transition: color 0.3s ease, transform 0.2s ease;
+      position: relative;
+      padding: 5px 0;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -5px;
+      left: 0;
+      background-color: var(--accent-green);
+      transition: width 0.3s ease-in-out;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    nav a:hover {
+      color: var(--accent-green);
+      transform: translateY(-2px);
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      position: relative;
+      margin-left: auto;
+    }
+
+    .search-box input {
+      padding: 10px 15px;
+      padding-right: 40px;
+      border-radius: 8px;
+      border: 1px solid var(--border-light);
+      background-color: var(--primary-bg);
+      color: var(--text-dark);
+      outline: none;
+      width: 250px;
+      font-size: 16px;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .search-box input::placeholder {
+      color: var(--text-light);
+    }
+
+    .search-box input:focus {
+      border-color: var(--accent-green);
+      box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.2);
+    }
+
+    .search-icon {
+      position: absolute;
+      right: 15px;
+      color: var(--text-medium);
+      font-size: 18px;
+      pointer-events: none;
+    }
+
+    /* --- Main Content Area for About Us --- */
+    main {
+      flex-grow: 1;
+      padding: 60px 20px;
+      max-width: 900px; /* Max width for content readability */
+      margin: 0 auto; /* Center the content */
+      background-color: var(--primary-bg);
+      border-radius: 12px;
+      box-shadow: 0 10px 25px var(--shadow-light);
+      margin-top: 30px; /* Space from header */
+      margin-bottom: 30px; /* Space from footer */
+    }
+
+    .about-section h2 {
+      font-size: 38px;
+      color: var(--text-dark);
+      margin-bottom: 40px;
+      font-weight: 700;
+      text-align: center;
+      position: relative;
+    }
+
+    .about-section h2::after {
+      content: '';
+      position: absolute;
+      width: 80px;
+      height: 4px;
+      background-color: var(--accent-green);
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: -15px;
+      border-radius: 2px;
+    }
+
+    .about-content {
+      text-align: left;
+      padding: 20px;
+      line-height: 1.8;
+      font-size: 17px;
+    }
+
+    .about-content p {
+      margin-bottom: 20px;
+      color: var(--text-medium);
+    }
+
+    .about-content h3 {
+      font-size: 24px;
+      color: var(--text-dark);
+      margin-top: 30px;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .team-member {
+      background-color: var(--secondary-bg);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .team-member:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .team-member img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 15px;
+      border: 3px solid var(--accent-green);
+    }
+
+    .team-member h4 {
+      font-size: 20px;
+      color: var(--text-dark);
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+
+    .team-member p {
+      font-size: 15px;
+      color: var(--text-light);
+    }
+
+
+    /* --- Footer (Consistent across all pages) --- */
+    footer {
+      background-color: var(--nav-bg);
+      color: var(--nav-text);
+      padding: 40px 20px;
+      text-align: center;
+      font-size: 15px;
+      border-top: 1px solid #444;
+      margin-top: auto;
+    }
+
+    footer .footer-links {
+      margin-bottom: 20px;
+    }
+
+    footer .footer-links a {
+      color: var(--nav-text);
+      text-decoration: none;
+      margin: 0 15px;
+      transition: color 0.3s ease;
+    }
+
+    footer .footer-links a:hover {
+      color: var(--accent-green);
+    }
+
+
+    /* --- Responsive Adjustments --- */
+    @media (max-width: 992px) {
+      header {
+        padding: 15px 30px;
+      }
+      nav a {
+        margin-left: 20px;
+      }
+      .search-box input {
+        width: 200px;
+      }
+      main {
+        margin-left: 20px;
+        margin-right: 20px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px 20px;
+      }
+      .logo {
+        margin-bottom: 10px;
+      }
+      nav {
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 15px;
+      }
+      nav a {
+        margin: 5px 10px;
+      }
+      .search-box {
+        width: 100%;
+        margin-left: 0;
+        justify-content: center;
+      }
+      .search-box input {
+        width: 100%;
+        max-width: 300px;
+      }
+      main {
+        padding: 40px 15px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
+      .about-section h2 {
+        font-size: 30px;
+        margin-bottom: 30px;
+      }
+      .about-content {
+        font-size: 16px;
+        padding: 10px;
+      }
+      .team-grid {
+        grid-template-columns: 1fr; /* Stack team members on small screens */
+      }
+    }
+
+    @media (max-width: 480px) {
+      header {
+        padding: 10px 15px;
+      }
+      .logo {
+        font-size: 24px;
+      }
+      .search-box input {
+        padding: 8px 12px;
+        padding-right: 35px;
+        font-size: 14px;
+      }
+      .search-icon {
+        font-size: 16px;
+        right: 12px;
+      }
+      .about-section h2 {
+        font-size: 26px;
+        margin-bottom: 25px;
+      }
+      .about-content h3 {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <a href="landing.html" class="logo">👕 ReWear</a>
+    <nav>
+      <a href="item_listing.html">Home</a>
+     
+      <a href="product_detail.html">How it Works</a>
+      <a href="dashboard.html">About Us</a>
+      <a href="admin-panel.html">Testimonials</a>
+      
+      <a href="login.html">Login</a>
+      <a href="register.html">Sign Up</a>
+    </nav>
+    <div class="search-box">
+      <input type="text" placeholder="Search items...">
+      <span class="search-icon">🔍</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="about-section">
+      <h2>About ReWear</h2>
+      <div class="about-content">
+        <p>Welcome to ReWear, your community for sustainable fashion and mindful consumption. We believe that fashion shouldn't cost the Earth. Our platform is built on the simple yet powerful idea of giving clothes a second life through swapping, reducing textile waste, and promoting a circular economy.</p>
+
+        <p>Founded in 2025, ReWear was born out of a passion for both style and sustainability. We saw an opportunity to connect individuals who love fashion but are also conscious of its environmental impact. Our goal is to make it easy and exciting for everyone to refresh their wardrobe without contributing to fast fashion's detrimental effects.</p>
+
+        <h3>Our Mission</h3>
+        <p>Our mission is to revolutionize the way people consume fashion by fostering a vibrant, trustworthy community where users can effortlessly swap their pre-loved clothing. We aim to reduce textile waste, promote sustainable habits, and make fashion accessible and eco-friendly for everyone.</p>
+
+        <h3>Our Vision</h3>
+        <p>We envision a world where every piece of clothing has a prolonged life, where fashion is truly circular, and where conscious consumption is the norm. ReWear strives to be the leading platform for clothing swaps globally, inspiring a new generation of sustainable fashion enthusiasts.</p>
+
+        <h3>Our Values</h3>
+        <ul>
+          <li><strong>Sustainability:</strong> Committed to reducing environmental impact.</li>
+          <li><strong>Community:</strong> Building connections and fostering a supportive network.</li>
+          <li><strong>Accessibility:</strong> Making sustainable fashion easy and affordable for all.</li>
+          <li><strong>Innovation:</strong> Continuously improving our platform for a better user experience.</li>
+          <li><strong>Transparency:</strong> Operating with honesty and integrity.</li>
+        </ul>
+
+        <h3>Meet the Team</h3>
+        <div class="team-grid">
+          <div class="team-member">
+            <img src="https://placehold.co/120x120/A8E6CF/212529?text=Founder" alt="Team Member 1">
+            <h4>Ritu Chaudhari</h4>
+            <p>Founder & CEO</p>
+          </div>
+          <div class="team-member">
+            <img src="https://placehold.co/120x120/DFFFCD/212529?text=Lead+Dev" alt="Team Member 2">
+            <h4>Charmi Sonagra</h4>
+            <p>Lead Developer</p>
+          </div>
+          <div class="team-member">
+            <img src="https://placehold.co/120x120/DCBFEF/212529?text=Marketing" alt="Team Member 3">
+            <h4>Vidhi Sutariya</h4>
+            <p>Marketing Director</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-links">
+      <a href="aboutus.html">About Us</a>
+      <a href="#">Contact</a>
+      <a href="#">FAQ</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Privacy Policy</a>
+    </div>
+    <p>&copy; 2025 ReWear. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ReWear - Admin Panel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* CSS Variables for consistent theming */
+    :root {
+      --primary-bg: #FFFFFF;
+      --secondary-bg: #F8F9FA; /* A very light, almost white background */
+      --accent-green: #28A745; /* A vibrant, but professional green */
+      --accent-green-hover: #218838;
+      --accent-blue: #007BFF; /* For specific CTAs if needed */
+      --accent-blue-hover: #0069D9;
+      --text-dark: #212529; /* Darker text for readability */
+      --text-medium: #495057;
+      --text-light: #6C757D;
+      --nav-bg: #343A40; /* Darker header background */
+      --nav-text: #F8F9FA;
+      --border-light: #E9ECEF;
+      --shadow-light: rgba(0, 0, 0, 0.05);
+      --shadow-medium: rgba(0, 0, 0, 0.1);
+      --success-color: #28A745; /* For messages and active states */
+      --error-color: #DC3545;   /* For error messages and ban actions */
+      --warning-color: #FFC107; /* For pending states */
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--secondary-bg);
+      color: var(--text-medium);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* --- Header --- */
+    header {
+      background-color: var(--nav-bg);
+      color: var(--nav-text);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      box-shadow: 0 2px 5px var(--shadow-light);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--accent-green);
+      letter-spacing: -0.5px;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      margin-right: 20px;
+    }
+
+    .logo:hover {
+      color: var(--accent-green-hover);
+    }
+
+    nav {
+      flex-grow: 1;
+      display: flex;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      margin-left: 25px;
+      color: var(--nav-text);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 16px;
+      transition: color 0.3s ease, transform 0.2s ease;
+      position: relative;
+      padding: 5px 0;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -5px;
+      left: 0;
+      background-color: var(--accent-green);
+      transition: width 0.3s ease-in-out;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    nav a:hover {
+      color: var(--accent-green);
+      transform: translateY(-2px);
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      position: relative;
+      margin-left: auto;
+    }
+
+    .search-box input {
+      padding: 10px 15px;
+      padding-right: 40px;
+      border-radius: 8px;
+      border: 1px solid var(--border-light);
+      background-color: var(--primary-bg);
+      color: var(--text-dark);
+      outline: none;
+      width: 250px;
+      font-size: 16px;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .search-box input::placeholder {
+      color: var(--text-light);
+    }
+
+    .search-box input:focus {
+      border-color: var(--accent-green);
+      box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.2);
+    }
+
+    .search-icon {
+      position: absolute;
+      right: 15px;
+      color: var(--text-medium);
+      font-size: 18px;
+      pointer-events: none;
+    }
+
+    /* --- Main Content --- */
+    main {
+      flex-grow: 1;
+      padding: 50px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 1200px;
+      width: 100%;
+      margin: auto;
+      padding: 0 20px;
+    }
+
+    .top-bar-admin {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--primary-bg);
+      padding: 20px 30px; /* Increased padding */
+      border-radius: 12px; /* Consistent border-radius */
+      box-shadow: 0 10px 25px var(--shadow-light);
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .top-bar-admin .search-input {
+      background: var(--secondary-bg);
+      border: 1px solid var(--border-light);
+      padding: 10px 15px;
+      border-radius: 8px;
+      color: var(--text-dark);
+      width: 250px; /* Wider input */
+      font-size: 16px;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .top-bar-admin .search-input::placeholder {
+      color: var(--text-light);
+    }
+
+    .top-bar-admin .search-input:focus {
+      outline: none;
+      border-color: var(--accent-green);
+      box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.2);
+    }
+
+    .nav-buttons-admin {
+      display: flex;
+      gap: 15px; /* More space between buttons */
+      flex-wrap: wrap;
+    }
+
+    .nav-buttons-admin button {
+      background: var(--secondary-bg);
+      border: 1px solid var(--border-light);
+      padding: 10px 20px;
+      border-radius: 8px;
+      color: var(--text-medium);
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+    }
+
+    .nav-buttons-admin button:hover {
+      background: var(--accent-green);
+      color: var(--primary-bg);
+      border-color: var(--accent-green);
+      box-shadow: 0 4px 10px rgba(40, 167, 69, 0.2);
+    }
+
+    .nav-buttons-admin button.active {
+      background: var(--accent-green);
+      color: var(--primary-bg);
+      border-color: var(--accent-green);
+      box-shadow: 0 4px 10px rgba(40, 167, 69, 0.2);
+    }
+
+    .section-title-admin {
+      margin: 50px 0 30px; /* More vertical space */
+      font-size: 32px; /* Larger title */
+      color: var(--text-dark);
+      font-weight: 700;
+      position: relative;
+      text-align: center; /* Center align title */
+    }
+
+    .section-title-admin::after {
+      content: '';
+      position: absolute;
+      width: 80px;
+      height: 4px;
+      background-color: var(--accent-green);
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: -15px;
+      border-radius: 2px;
+    }
+
+    .user-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px; /* More space between user cards */
+      margin-bottom: 50px; /* Space before footer */
+    }
+
+    .user-card {
+      display: flex;
+      align-items: center;
+      background: var(--primary-bg);
+      border-radius: 12px;
+      padding: 20px; /* More padding */
+      box-shadow: 0 4px 10px var(--shadow-light);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      flex-wrap: wrap; /* Allow wrapping */
+      gap: 15px; /* Space between elements in card */
+    }
+
+    .user-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px var(--shadow-medium);
+    }
+
+    .user-avatar {
+      width: 70px; /* Slightly larger avatar */
+      height: 70px;
+      border-radius: 50%;
+      background: var(--accent-green); /* Accent color for avatar */
+      color: var(--primary-bg);
+      font-size: 32px; /* Larger initials */
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .user-details {
+      flex-grow: 1;
+      text-align: left;
+      color: var(--text-medium);
+      font-size: 15px;
+    }
+
+    .user-details strong {
+      display: block; /* Name on its own line */
+      font-size: 18px;
+      color: var(--text-dark);
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+
+    .user-details .status {
+      font-weight: 500;
+      margin-top: 5px;
+    }
+
+    .user-details .status.active {
+      color: var(--success-color);
+    }
+    .user-details .status.pending {
+      color: var(--warning-color);
+    }
+    .user-details .status.blocked {
+      color: var(--error-color);
+    }
+
+    .user-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px; /* More space between action buttons */
+      flex-shrink: 0;
+    }
+
+    .user-actions button {
+      background: var(--secondary-bg);
+      border: 1px solid var(--border-light);
+      color: var(--text-medium);
+      padding: 8px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+    }
+
+    .user-actions button:hover {
+      background: var(--accent-green);
+      color: var(--primary-bg);
+      border-color: var(--accent-green);
+      box-shadow: 0 4px 10px rgba(40, 167, 69, 0.2);
+    }
+
+    .user-actions button.ban-btn {
+      background: var(--error-color);
+      color: var(--primary-bg);
+      border-color: var(--error-color);
+      box-shadow: 0 4px 10px rgba(220, 53, 69, 0.2);
+    }
+
+    .user-actions button.ban-btn:hover {
+      background: #bd2130; /* Darker red */
+      border-color: #bd2130;
+      box-shadow: 0 6px 15px rgba(220, 53, 69, 0.3);
+    }
+
+    /* --- Footer --- */
+    footer {
+      background-color: var(--nav-bg);
+      color: var(--nav-text);
+      padding: 40px 20px;
+      text-align: center;
+      font-size: 15px;
+      border-top: 1px solid #444;
+      margin-top: auto;
+    }
+
+    footer .footer-links {
+      margin-bottom: 20px;
+    }
+
+    footer .footer-links a {
+      color: var(--nav-text);
+      text-decoration: none;
+      margin: 0 15px;
+      transition: color 0.3s ease;
+    }
+
+    footer .footer-links a:hover {
+      color: var(--accent-green);
+    }
+
+    /* --- Responsive Adjustments --- */
+    @media (max-width: 992px) {
+      header {
+        padding: 15px 30px;
+      }
+      nav a {
+        margin-left: 20px;
+      }
+      .search-box input {
+        width: 200px;
+      }
+      .container {
+        padding: 0 15px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px 20px;
+      }
+      .logo {
+        margin-bottom: 10px;
+      }
+      nav {
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 15px;
+      }
+      nav a {
+        margin: 5px 10px;
+      }
+      .search-box {
+        width: 100%;
+        margin-left: 0;
+        justify-content: center;
+      }
+      .search-box input {
+        width: 100%;
+        max-width: 300px;
+      }
+      main {
+        padding: 30px 15px;
+      }
+      .top-bar-admin {
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+      }
+      .top-bar-admin .search-input {
+        width: 100%;
+        max-width: 300px;
+        margin-bottom: 15px;
+      }
+      .nav-buttons-admin {
+        width: 100%;
+        justify-content: center;
+      }
+      .nav-buttons-admin button {
+        flex-grow: 1; /* Allow buttons to expand */
+      }
+      .section-title-admin {
+        font-size: 26px;
+        margin: 40px 0 25px;
+      }
+      .section-title-admin::after {
+        width: 60px;
+        bottom: -10px;
+      }
+      .user-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 15px;
+      }
+      .user-avatar {
+        margin-bottom: 15px;
+      }
+      .user-details {
+        text-align: center;
+      }
+      .user-actions {
+        flex-direction: row; /* Actions side-by-side on smaller screens */
+        width: 100%;
+        justify-content: center;
+        margin-top: 15px;
+      }
+      .user-actions button {
+        flex-grow: 1;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header {
+        padding: 10px 15px;
+      }
+      .logo {
+        font-size: 24px;
+      }
+      .search-box input {
+        padding: 8px 12px;
+        padding-right: 35px;
+        font-size: 14px;
+      }
+      .search-icon {
+        font-size: 16px;
+        right: 12px;
+      }
+      main {
+        padding: 20px 10px;
+      }
+      .top-bar-admin {
+        padding: 15px;
+      }
+      .top-bar-admin .search-input {
+        font-size: 14px;
+      }
+      .nav-buttons-admin button {
+        padding: 8px 12px;
+        font-size: 14px;
+      }
+      .section-title-admin {
+        font-size: 22px;
+        margin: 30px 0 20px;
+      }
+      .user-avatar {
+        width: 60px;
+        height: 60px;
+        font-size: 28px;
+      }
+      .user-details strong {
+        font-size: 16px;
+      }
+      .user-details {
+        font-size: 14px;
+      }
+      .user-actions button {
+        padding: 6px 10px;
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <a href="landing.html" class="logo">👕 ReWear</a>
+    <nav>
+      <a href="item_listing.html">Home</a>
+     
+      <a href="product_detail.html">How it Works</a>
+      <a href="dashboard.html">About Us</a>
+      <a href="admin-panel.html">Testimonials</a>
+      
+      <a href="login.html">Login</a>
+      <a href="register.html">Sign Up</a>
+    </nav>
+    <div class="search-box">
+      <input type="text" placeholder="Search items...">
+      <span class="search-icon">🔍</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <!-- Top Bar for Admin Panel -->
+      <div class="top-bar-admin">
+        <input type="text" class="search-input" placeholder="Search users, orders, or listings...">
+        <div class="nav-buttons-admin">
+          <button class="active" onclick="navigate('users', this)">Manage Users</button>
+          <button onclick="navigate('orders', this)">Manage Orders</button>
+          <button onclick="navigate('listings', this)">Manage Listings</button>
+        </div>
+      </div>
+
+      <!-- Section Title -->
+      <div class="section-title-admin" id="currentSectionTitle">Manage Users</div>
+
+      <!-- User List Section -->
+      <div class="user-list" id="adminContent">
+        <!-- User Cards will be dynamically loaded here -->
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-links">
+      <a href="#">About Us</a>
+      <a href="#">Contact</a>
+      <a href="#">FAQ</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Privacy Policy</a>
+    </div>
+    <p>&copy; 2025 ReWear. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const usersData = [
+      { name: "John Doe", email: "john@example.com", status: "Active", initials: "JD" },
+      { name: "Jane Smith", email: "jane@example.com", status: "Pending", initials: "JS" },
+      { name: "Alex Brown", email: "alex@example.com", status: "Blocked", initials: "AB" },
+      { name: "Emily White", email: "emily@example.com", status: "Active", initials: "EW" },
+      { name: "Michael Green", email: "michael@example.com", status: "Active", initials: "MG" }
+    ];
+
+    const ordersData = [
+      { id: "ORD001", user: "John Doe", item: "Denim Jacket", status: "Completed" },
+      { id: "ORD002", user: "Jane Smith", item: "Floral Dress", status: "Processing" },
+      { id: "ORD003", user: "Alex Brown", item: "Leather Boots", status: "Pending" }
+    ];
+
+    const listingsData = [
+      { id: "LST001", user: "Emily White", item: "Knit Sweater", status: "Active" },
+      { id: "LST002", user: "Michael Green", item: "Graphic T-Shirt", status: "Swapped" },
+      { id: "LST003", user: "John Doe", item: "Sports Shoes", status: "Active" }
+    ];
+
+    function renderUsers(users) {
+      const contentDiv = document.getElementById('adminContent');
+      contentDiv.innerHTML = ''; // Clear existing content
+      contentDiv.className = 'user-list'; // Ensure correct class for users
+
+      users.forEach(user => {
+        const userCard = document.createElement('div');
+        userCard.className = 'user-card';
+        const statusClass = user.status.toLowerCase(); // active, pending, blocked
+        userCard.innerHTML = `
+          <div class="user-avatar">${user.initials}</div>
+          <div class="user-details">
+            <strong>${user.name}</strong>
+            Email: ${user.email}<br>
+            <span class="status ${statusClass}">Status: ${user.status}</span>
+          </div>
+          <div class="user-actions">
+            <button onclick="viewUser('${user.name}')">View Profile</button>
+            <button class="ban-btn" onclick="banUser('${user.name}')">Ban User</button>
+          </div>
+        `;
+        contentDiv.appendChild(userCard);
+      });
+    }
+
+    function renderOrders(orders) {
+      const contentDiv = document.getElementById('adminContent');
+      contentDiv.innerHTML = '';
+      contentDiv.className = 'grid'; // Use grid for orders/listings for better layout
+
+      orders.forEach(order => {
+        const orderCard = document.createElement('div');
+        orderCard.className = 'card'; // Reusing 'card' style for consistency
+        orderCard.innerHTML = `
+          <div class="item-title">Order ID: ${order.id}</div>
+          <p>User: ${order.user}</p>
+          <p>Item: ${order.item}</p>
+          <div class="item-status">${order.status}</div>
+          <button class="btn-secondary" style="margin-top: 10px; padding: 8px 12px; font-size: 14px;" onclick="viewOrder('${order.id}')">View Details</button>
+        `;
+        contentDiv.appendChild(orderCard);
+      });
+    }
+
+    function renderListings(listings) {
+      const contentDiv = document.getElementById('adminContent');
+      contentDiv.innerHTML = '';
+      contentDiv.className = 'grid'; // Use grid for orders/listings
+
+      listings.forEach(listing => {
+        const listingCard = document.createElement('div');
+        listingCard.className = 'card'; // Reusing 'card' style
+        listingCard.innerHTML = `
+          <div class="item-title">Listing ID: ${listing.id}</div>
+          <p>User: ${listing.user}</p>
+          <p>Item: ${listing.item}</p>
+          <div class="item-status">${listing.status}</div>
+          <button class="btn-secondary" style="margin-top: 10px; padding: 8px 12px; font-size: 14px;" onclick="viewListing('${listing.id}')">View Details</button>
+        `;
+        contentDiv.appendChild(listingCard);
+      });
+    }
+
+    function navigate(tab, clickedButton) {
+      const buttons = document.querySelectorAll('.nav-buttons-admin button');
+      buttons.forEach(button => button.classList.remove('active'));
+      clickedButton.classList.add('active');
+
+      const sectionTitle = document.getElementById('currentSectionTitle');
+
+      switch (tab) {
+        case 'users':
+          sectionTitle.textContent = 'Manage Users';
+          renderUsers(usersData);
+          break;
+        case 'orders':
+          sectionTitle.textContent = 'Manage Orders';
+          renderOrders(ordersData);
+          break;
+        case 'listings':
+          sectionTitle.textContent = 'Manage Listings';
+          renderListings(listingsData);
+          break;
+        default:
+          sectionTitle.textContent = 'Admin Panel';
+          renderUsers(usersData); // Default to users
+      }
+      console.log("Switched to: " + tab);
+    }
+
+    function viewUser(userName) {
+      alert("Viewing profile for: " + userName);
+    }
+
+    function banUser(userName) {
+      if (confirm("Are you sure you want to ban " + userName + "?")) {
+        alert(userName + " has been banned.");
+        // In a real app, update user status in data and re-render
+      }
+    }
+
+    function viewOrder(orderId) {
+      alert("Viewing details for Order ID: " + orderId);
+    }
+
+    function viewListing(listingId) {
+      alert("Viewing details for Listing ID: " + listingId);
+    }
+
+    // Initial render on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      renderUsers(usersData);
+    });
+  </script>
+
+</body>
+</html>

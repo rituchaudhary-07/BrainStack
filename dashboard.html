@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReWear - User Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* CSS Variables for consistent theming */
+    :root {
+      --primary-bg: #FFFFFF;
+      --secondary-bg: #F8F9FA; /* A very light, almost white background */
+      --accent-green: #28A745; /* A vibrant, but professional green */
+      --accent-green-hover: #218838;
+      --accent-blue: #007BFF; /* For specific CTAs if needed */
+      --accent-blue-hover: #0069D9;
+      --text-dark: #212529; /* Darker text for readability */
+      --text-medium: #495057;
+      --text-light: #6C757D;
+      --nav-bg: #343A40; /* Darker header background */
+      --nav-text: #F8F9FA;
+      --border-light: #E9ECEF;
+      --shadow-light: rgba(0, 0, 0, 0.05);
+      --shadow-medium: rgba(0, 0, 0, 0.1);
+      --success-color: #28A745; /* For messages */
+      --error-color: #DC3545;   /* For messages */
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--secondary-bg);
+      color: var(--text-medium);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* --- Header --- */
+    header {
+      background-color: var(--nav-bg);
+      color: var(--nav-text);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      box-shadow: 0 2px 5px var(--shadow-light);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--accent-green);
+      letter-spacing: -0.5px;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      margin-right: 20px;
+    }
+
+    .logo:hover {
+      color: var(--accent-green-hover);
+    }
+
+    nav {
+      flex-grow: 1;
+      display: flex;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      margin-left: 25px;
+      color: var(--nav-text);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 16px;
+      transition: color 0.3s ease, transform 0.2s ease;
+      position: relative;
+      padding: 5px 0;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -5px;
+      left: 0;
+      background-color: var(--accent-green);
+      transition: width 0.3s ease-in-out;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    nav a:hover {
+      color: var(--accent-green);
+      transform: translateY(-2px);
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      position: relative;
+      margin-left: auto;
+    }
+
+    .search-box input {
+      padding: 10px 15px;
+      padding-right: 40px;
+      border-radius: 8px;
+      border: 1px solid var(--border-light);
+      background-color: var(--primary-bg);
+      color: var(--text-dark);
+      outline: none;
+      width: 250px;
+      font-size: 16px;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .search-box input::placeholder {
+      color: var(--text-light);
+    }
+
+    .search-box input:focus {
+      border-color: var(--accent-green);
+      box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.2);
+    }
+
+    .search-icon {
+      position: absolute;
+      right: 15px;
+      color: var(--text-medium);
+      font-size: 18px;
+      pointer-events: none;
+    }
+
+    /* --- Main Content --- */
+    main {
+      flex-grow: 1;
+      padding: 50px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .dashboard-container {
+      max-width: 1200px; /* Wider dashboard container */
+      width: 100%;
+      margin: auto;
+      padding: 0 20px; /* Inner padding for the container */
+    }
+
+    .profile-section {
+      background-color: var(--primary-bg);
+      padding: 30px;
+      display: flex;
+      align-items: center;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px var(--shadow-light);
+      flex-wrap: wrap; /* Allow wrapping of content */
+      gap: 30px; /* Space between profile pic and info */
+    }
+
+    .profile-pic {
+      width: 120px; /* Larger profile pic */
+      height: 120px;
+      border-radius: 50%;
+      background-color: var(--accent-green); /* Accent color for profile pic */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 48px; /* Larger initials */
+      font-weight: 700;
+      color: var(--primary-bg);
+      box-shadow: 0 4px 10px rgba(40, 167, 69, 0.2);
+      flex-shrink: 0; /* Prevent shrinking */
+    }
+
+    .user-info-grid {
+      flex-grow: 1;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Responsive grid for info boxes */
+      gap: 20px; /* Space between info boxes */
+    }
+
+    .info-box {
+      background: var(--secondary-bg);
+      padding: 15px 20px; /* More padding */
+      border-radius: 8px;
+      min-width: 150px;
+      color: var(--text-medium);
+      font-size: 16px;
+      text-align: left;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03); /* Lighter shadow */
+    }
+
+    .info-box strong {
+      display: block; /* Label on top */
+      font-size: 14px;
+      color: var(--text-light);
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+
+    .info-box span {
+      font-size: 20px; /* Larger value */
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+
+    .bio-section {
+      width: 100%;
+      margin-top: 30px; /* Space from header */
+      background: var(--primary-bg);
+      padding: 25px 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px var(--shadow-light);
+      text-align: left;
+    }
+
+    .bio-section h3 {
+      font-size: 24px;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .bio-section p {
+      font-size: 16px;
+      color: var(--text-medium);
+    }
+
+    .section {
+      margin-top: 50px; /* Space between main sections */
+      width: 100%;
+      text-align: center;
+    }
+
+    .section h2 {
+      font-size: 38px;
+      color: var(--text-dark);
+      margin-bottom: 40px;
+      font-weight: 700;
+      position: relative;
+    }
+
+    .section h2::after {
+      content: '';
+      position: absolute;
+      width: 80px;
+      height: 4px;
+      background-color: var(--accent-green);
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: -15px;
+      border-radius: 2px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Larger grid items */
+      gap: 25px; /* More space */
+      justify-content: center;
+    }
+
+    .card {
+      background-color: var(--primary-bg);
+      padding: 15px;
+      border-radius: 12px;
+      text-align: center;
+      height: 220px; /* Taller cards for images/details */
+      box-shadow: 0 4px 10px var(--shadow-light);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between; /* Distribute content */
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 15px var(--shadow-medium);
+    }
+
+    .card img {
+      width: 100%;
+      height: 120px; /* Image height */
+      object-fit: cover;
+      border-radius: 8px; /* Rounded image corners */
+      margin-bottom: 10px;
+    }
+
+    .card .item-title {
+      font-weight: 600;
+      color: var(--text-dark);
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+
+    .card .item-status {
+      font-size: 14px;
+      color: var(--accent-green);
+      font-weight: 500;
+    }
+
+    /* --- Footer --- */
+    footer {
+      background-color: var(--nav-bg);
+      color: var(--nav-text);
+      padding: 40px 20px;
+      text-align: center;
+      font-size: 15px;
+      border-top: 1px solid #444;
+      margin-top: auto; /* Push footer to the bottom */
+    }
+
+    footer .footer-links {
+      margin-bottom: 20px;
+    }
+
+    footer .footer-links a {
+      color: var(--nav-text);
+      text-decoration: none;
+      margin: 0 15px;
+      transition: color 0.3s ease;
+    }
+
+    footer .footer-links a:hover {
+      color: var(--accent-green);
+    }
+
+    /* --- Responsive Adjustments --- */
+    @media (max-width: 992px) {
+      header {
+        padding: 15px 30px;
+      }
+      nav a {
+        margin-left: 20px;
+      }
+      .search-box input {
+        width: 200px;
+      }
+      .dashboard-container {
+        padding: 0 15px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px 20px;
+      }
+      .logo {
+        margin-bottom: 10px;
+      }
+      nav {
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 15px;
+      }
+      nav a {
+        margin: 5px 10px;
+      }
+      .search-box {
+        width: 100%;
+        margin-left: 0;
+        justify-content: center;
+      }
+      .search-box input {
+        width: 100%;
+        max-width: 300px;
+      }
+      main {
+        padding: 30px 15px;
+      }
+      .profile-section {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+        padding: 25px;
+      }
+      .profile-pic {
+        margin: 0 auto; /* Center profile pic */
+      }
+      .user-info-grid {
+        grid-template-columns: 1fr; /* Stack info boxes */
+        gap: 15px;
+      }
+      .info-box {
+        text-align: center;
+      }
+      .bio-section {
+        padding: 20px 25px;
+      }
+      .bio-section h3 {
+        font-size: 20px;
+      }
+      .section h2 {
+        font-size: 30px;
+        margin-bottom: 30px;
+      }
+      .section h2::after {
+        width: 60px;
+        bottom: -10px;
+      }
+      .grid {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 15px;
+      }
+      .card {
+        height: 180px;
+        padding: 10px;
+      }
+      .card img {
+        height: 90px;
+      }
+      .card .item-title {
+        font-size: 14px;
+      }
+      .card .item-status {
+        font-size: 12px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header {
+        padding: 10px 15px;
+      }
+      .logo {
+        font-size: 24px;
+      }
+      .search-box input {
+        padding: 8px 12px;
+        padding-right: 35px;
+        font-size: 14px;
+      }
+      .search-icon {
+        font-size: 16px;
+        right: 12px;
+      }
+      main {
+        padding: 20px 10px;
+      }
+      .profile-pic {
+        width: 100px;
+        height: 100px;
+        font-size: 40px;
+      }
+      .info-box {
+        padding: 12px 15px;
+        font-size: 14px;
+      }
+      .info-box strong {
+        font-size: 12px;
+      }
+      .info-box span {
+        font-size: 18px;
+      }
+      .bio-section {
+        padding: 15px 20px;
+      }
+      .bio-section h3 {
+        font-size: 18px;
+      }
+      .bio-section p {
+        font-size: 14px;
+      }
+      .section h2 {
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+      .grid {
+        gap: 10px;
+      }
+      .card {
+        height: 160px;
+        padding: 8px;
+      }
+      .card img {
+        height: 80px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <a href="landing.html" class="logo">👕 ReWear</a>
+    <nav>
+      <a href="item_listing.html">Home</a>
+     
+      <a href="product_detail.html">How it Works</a>
+      <a href="dashboard.html">About Us</a>
+      <a href="admin-panel.html">Testimonials</a>
+      
+      <a href="login.html">Login</a>
+      <a href="register.html">Sign Up</a>
+    </nav>
+    </nav>
+    <div class="search-box">
+      <input type="text" placeholder="Search items...">
+      <span class="search-icon">🔍</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="dashboard-container">
+
+      <!-- Profile Header Section -->
+      <div class="profile-section">
+        <div class="profile-pic">JD</div> <!-- Placeholder for initials -->
+        <div class="user-info-grid">
+          <div class="info-box">
+            <strong>Name</strong>
+            <span>Alex Doe</span>
+          </div>
+          <div class="info-box">
+            <strong>Email</strong>
+            <span>alex.doe@example.com</span>
+          </div>
+          <div class="info-box">
+            <strong>Total Swaps</strong>
+            <span>12</span>
+          </div>
+          <div class="info-box">
+            <strong>ReWear Points</strong>
+            <span>340</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bio Section -->
+      <div class="bio-section">
+        <h3>About Me</h3>
+        <p>Eco-conscious fashion lover always looking to swap sustainably 🌱. Passionate about reducing textile waste and discovering unique, pre-loved garments. Happy to connect with other swappers!</p>
+      </div>
+
+      <!-- My Listings Section -->
+      <div class="section">
+        <h2>My Listings</h2>
+        <div class="grid" id="listings">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- My Swaps/Purchases Section -->
+      <div class="section">
+        <h2>My Swaps & Purchases</h2>
+        <div class="grid" id="purchases">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-links">
+      <a href="#">About Us</a>
+      <a href="#">Contact</a>
+      <a href="#">FAQ</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Privacy Policy</a>
+    </div>
+    <p>&copy; 2025 ReWear. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const listingsData = [
+      { title: "Blue Denim Jacket", img: "https://m.media-amazon.com/images/I/712UDW7pnEL._AC_UL480_FMwebp_QL65_.jpg", status: "Active" },
+      { title: "Striped Summer Dress", img: "https://m.media-amazon.com/images/I/713EWcF36KL._SY679_.jpg", status: "Pending Swap" },
+      { title: "Vintage Leather Boots", img: "https://m.media-amazon.com/images/I/811aELp8klL._AC_UL480_FMwebp_QL65_.jpg", status: "Active" },
+      { title: "Cozy Knit Scarf", img: "https://m.media-amazon.com/images/I/31JZ3NdMJ1L._AC_UL480_FMwebp_QL65_.jpg", status: "Swapped" }
+    ];
+
+    const purchasesData = [
+      { title: "Classic White T-shirt", img: "https://m.media-amazon.com/images/I/516WhvDcovL._AC_UL480_FMwebp_QL65_.jpg", status: "Received" },
+      { title: "High-Waisted Jeans", img: "https://m.media-amazon.com/images/I/51igj1adJWL._AC_UL480_FMwebp_QL65_.jpg", status: "Received" },
+      { title: "Floral Blouse", img: "https://m.media-amazon.com/images/I/51am2moNjjL._AC_UL480_FMwebp_QL65_.jpg", status: "Pending Delivery" }
+    ];
+
+    function renderItems(items, containerId) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = ''; // Clear previous content
+      items.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <img src="${item.img}" alt="${item.title}">
+          <div class="item-title">${item.title}</div>
+          <div class="item-status">${item.status}</div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Render items on page load
+    renderItems(listingsData, 'listings');
+    renderItems(purchasesData, 'purchases');
+  </script>
+
+</body>
+</html>

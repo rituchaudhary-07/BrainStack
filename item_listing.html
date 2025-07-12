@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReWear - Item Listing</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* CSS Variables for consistent theming (copied from landing page) */
+    :root {
+      --primary-bg: #FFFFFF;
+      --secondary-bg: #F8F9FA; /* A very light, almost white background */
+      --accent-green: #28A745; /* A vibrant, but professional green */
+      --accent-green-hover: #218838;
+      --accent-blue: #007BFF; /* For specific CTAs if needed */
+      --accent-blue-hover: #0069D9;
+      --text-dark: #212529; /* Darker text for readability */
+      --text-medium: #495057;
+      --text-light: #6C757D;
+      --nav-bg: #343A40; /* Darker header background */
+      --nav-text: #F8F9FA;
+      --border-light: #E9ECEF;
+      --shadow-light: rgba(0, 0, 0, 0.05);
+      --shadow-medium: rgba(0, 0, 0, 0.1);
+      --success-color: #28A745; /* For messages */
+      --error-color: #DC3545;   /* For messages */
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--secondary-bg); /* Consistent body background */
+      color: var(--text-medium);
+      line-height: 1.6;
+      min-height: 100vh; /* Ensure full height for sticky footer */
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* --- Header --- */
+    header {
+      background-color: var(--nav-bg);
+      color: var(--nav-text);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px; /* Consistent padding */
+      box-shadow: 0 2px 5px var(--shadow-light);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      flex-wrap: wrap; /* Allow header content to wrap on smaller screens */
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--accent-green); /* Accent color for logo */
+      letter-spacing: -0.5px;
+      text-decoration: none; /* Make logo a link */
+      transition: color 0.3s ease;
+      margin-right: 20px; /* Space between logo and nav/search */
+    }
+
+    .logo:hover {
+      color: var(--accent-green-hover);
+    }
+
+    /* Navigation styling (copied from landing page) */
+    nav {
+      flex-grow: 1; /* Allow nav to take available space */
+      display: flex;
+      justify-content: flex-start; /* Align nav items to the left */
+      flex-wrap: wrap; /* Allow nav items to wrap */
+    }
+
+    nav a {
+      margin-left: 25px; /* Space between nav items */
+      color: var(--nav-text);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 16px;
+      transition: color 0.3s ease, transform 0.2s ease;
+      position: relative; /* For underline effect */
+      padding: 5px 0; /* Add padding for clickable area */
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -5px;
+      left: 0;
+      background-color: var(--accent-green);
+      transition: width 0.3s ease-in-out;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    nav a:hover {
+      color: var(--accent-green); /* Accent color on hover */
+      transform: translateY(-2px);
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      position: relative;
+      margin-left: auto; /* Push search box to the right */
+    }
+
+    .search-box input {
+      padding: 10px 15px;
+      padding-right: 40px; /* Space for icon */
+      border-radius: 8px;
+      border: 1px solid var(--border-light);
+      background-color: var(--primary-bg);
+      color: var(--text-dark);
+      outline: none;
+      width: 250px;
+      font-size: 16px;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .search-box input::placeholder {
+      color: var(--text-light);
+    }
+
+    .search-box input:focus {
+      border-color: var(--accent-green);
+      box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.2);
+    }
+
+    .search-icon {
+      position: absolute;
+      right: 15px;
+      color: var(--text-medium);
+      font-size: 18px;
+      pointer-events: none; /* Make icon unclickable, so input receives clicks */
+    }
+
+    main {
+      flex-grow: 1;
+      padding: 50px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 50px;
+    }
+
+    /* --- Product Details --- */
+    .product-details {
+      background: var(--primary-bg);
+      border-radius: 12px;
+      display: flex;
+      padding: 30px;
+      box-shadow: 0 10px 25px var(--shadow-light);
+      max-width: 1000px;
+      width: 100%;
+      gap: 40px;
+      flex-wrap: wrap;
+      align-items: flex-start;
+    }
+
+    .product-image {
+      flex: 1;
+      min-width: 300px;
+      height: 380px;
+      background-color: var(--secondary-bg);
+      background-image: url(https://m.media-amazon.com/images/I/612aHibG3jL._AC_UL480_FMwebp_QL65_.jpg);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+
+    .product-info {
+      flex: 1.5;
+      min-width: 300px;
+      text-align: left;
+    }
+
+    .product-info h2 {
+      font-size: 36px;
+      color: var(--text-dark);
+      margin-bottom: 15px;
+      font-weight: 700;
+    }
+
+    .product-info p {
+      font-size: 17px;
+      line-height: 1.8;
+      margin-bottom: 20px;
+      color: var(--text-medium);
+    }
+
+    .product-meta {
+      margin-bottom: 25px;
+      font-size: 16px;
+      color: var(--text-medium);
+    }
+
+    .product-meta strong {
+      color: var(--text-dark);
+      font-weight: 600;
+    }
+
+    .product-meta span {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .product-actions {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      padding: 14px 28px;
+      background-color: var(--accent-green);
+      color: var(--primary-bg);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 17px;
+      font-weight: 600;
+      transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 10px rgba(40, 167, 69, 0.2);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--accent-green-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(40, 167, 69, 0.3);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-secondary {
+      padding: 14px 28px;
+      background-color: var(--primary-bg);
+      color: var(--accent-green);
+      border: 1px solid var(--accent-green);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 17px;
+      font-weight: 600;
+      transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--accent-green);
+      color: var(--primary-bg);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(40, 167, 69, 0.3);
+    }
+
+    .btn-secondary:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    /* --- Related Products --- */
+    .related-section {
+      width: 100%;
+      max-width: 1000px;
+      text-align: center;
+    }
+
+    .related-section h3 {
+      font-size: 32px;
+      color: var(--text-dark);
+      margin-bottom: 40px;
+      font-weight: 700;
+      position: relative;
+    }
+
+    .related-section h3::after {
+      content: '';
+      position: absolute;
+      width: 80px;
+      height: 4px;
+      background-color: var(--accent-green);
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: -15px;
+      border-radius: 2px;
+    }
+
+    .related-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 25px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .related-item {
+      background-color: var(--primary-bg);
+      border-radius: 12px;
+      box-shadow: 0 4px 10px var(--shadow-light);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+
+    .related-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 15px var(--shadow-medium);
+    }
+
+    .related-item img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+    }
+
+    .related-item-details {
+      padding: 15px;
+    }
+
+    .related-item-details .title {
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 5px;
+      font-size: 16px;
+    }
+
+    .related-item-details .price {
+      color: var(--accent-green);
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    /* --- Footer --- */
+    footer {
+      background-color: var(--nav-bg);
+      color: var(--nav-text);
+      padding: 40px 20px;
+      text-align: center;
+      font-size: 15px;
+      border-top: 1px solid #444;
+      margin-top: auto;
+    }
+
+    footer .footer-links {
+      margin-bottom: 20px;
+    }
+
+    footer .footer-links a {
+      color: var(--nav-text);
+      text-decoration: none;
+      margin: 0 15px;
+      transition: color 0.3s ease;
+    }
+
+    footer .footer-links a:hover {
+      color: var(--accent-green);
+    }
+
+    /* --- Responsive Adjustments --- */
+    @media (max-width: 992px) {
+      header {
+        padding: 15px 30px;
+      }
+      nav a {
+        margin-left: 20px;
+      }
+      .search-box input {
+        width: 200px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start; /* Align items to start when stacked */
+        padding: 15px 20px;
+      }
+      .logo {
+        margin-bottom: 10px;
+      }
+      nav {
+        width: 100%;
+        justify-content: center; /* Center nav items when stacked */
+        margin-bottom: 15px;
+      }
+      nav a {
+        margin: 5px 10px; /* Adjust margin for wrapped nav items */
+      }
+      .search-box {
+        width: 100%;
+        margin-left: 0; /* Remove auto-margin */
+        justify-content: center;
+      }
+      .search-box input {
+        width: 100%;
+        max-width: 300px;
+      }
+      main {
+        padding: 30px 15px;
+        gap: 30px;
+      }
+      .product-details {
+        flex-direction: column;
+        gap: 30px;
+        padding: 25px;
+      }
+      .product-image {
+        min-width: unset;
+        width: 100%;
+        height: 300px;
+      }
+      .product-info {
+        min-width: unset;
+        width: 100%;
+      }
+      .product-info h2 {
+        font-size: 30px;
+      }
+      .product-info p {
+        font-size: 16px;
+      }
+      .btn-primary, .btn-secondary {
+        padding: 12px 20px;
+        font-size: 16px;
+        flex-grow: 1; /* Allow buttons to grow */
+      }
+      .related-section h3 {
+        font-size: 26px;
+        margin-bottom: 30px;
+      }
+      .related-section h3::after {
+        width: 60px;
+        bottom: -10px;
+      }
+      .related-grid {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 15px;
+      }
+      .related-item img {
+        height: 120px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header {
+        padding: 10px 15px;
+      }
+      .logo {
+        font-size: 24px;
+      }
+      .search-box input {
+        padding: 8px 12px;
+        padding-right: 35px;
+        font-size: 14px;
+      }
+      .search-icon {
+        font-size: 16px;
+        right: 12px;
+      }
+      main {
+        padding: 20px 10px;
+        gap: 20px;
+      }
+      .product-details {
+        padding: 20px;
+        gap: 20px;
+      }
+      .product-image {
+        height: 250px;
+      }
+      .product-info h2 {
+        font-size: 24px;
+      }
+      .product-info p {
+        font-size: 15px;
+      }
+      .product-meta span {
+        font-size: 14px;
+      }
+      .btn-primary, .btn-secondary {
+        padding: 10px 15px;
+        font-size: 14px;
+      }
+      .related-section h3 {
+        font-size: 22px;
+        margin-bottom: 25px;
+      }
+      .related-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+      .related-item img {
+        height: 100px;
+      }
+      .related-item-details {
+        padding: 10px;
+      }
+      .related-item-details .title {
+        font-size: 14px;
+      }
+      .related-item-details .price {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <a href="landing.html" class="logo">👕 ReWear</a>
+    <nav>
+      <a href="item_listing.html">Home</a>
+     
+      <a href="product_detail.html">How it Works</a>
+      <a href="dashboard.html">About Us</a>
+      <a href="admin-panel.html">Testimonials</a>
+      
+      <a href="login.html">Login</a>
+      <a href="register.html">Sign Up</a>
+    </nav>
+    <div class="search-box">
+      <input type="text" placeholder="Search items...">
+      <span class="search-icon">🔍</span>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- Product Detail -->
+    <div class="product-details">
+      <div class="product-image"></div>
+      <div class="product-info">
+        <h2>Blue Denim Jacket</h2>
+        <div class="product-meta">
+          <span><strong>Brand:</strong> Levi's</span>
+          <span><strong>Size:</strong> M</span>
+          <span><strong>Condition:</strong> Gently Used (8/10)</span>
+          <span><strong>Material:</strong> 100% Cotton</span>
+          <span><strong>Original Price:</strong> ₹2500 (approx.)</span>
+        </div>
+        <p>
+          This classic blue denim jacket is a timeless piece, perfect for layering over any outfit. It features a comfortable fit, durable denim, and classic button-up styling. Ideal for casual outings, light weather, or adding a stylish touch to your everyday look. Minor fading consistent with gentle use, but no rips or major stains.
+        </p>
+        <p>
+          Ready for a new home where it can be loved again!
+        </p>
+        <div class="product-actions">
+          <button class="btn-primary" onclick="proposeSwap()">Propose Swap</button>
+          <button class="btn-secondary" onclick="addToWishlist()">Add to Wishlist</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Related Products -->
+    <div class="related-section">
+      <h3>More Like This</h3>
+      <div class="related-grid" id="relatedGrid">
+        <!-- Related items will be injected here via JS -->
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-links">
+      <a href="#">About Us</a>
+      <a href="#">Contact</a>
+      <a href="#">FAQ</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Privacy Policy</a>
+    </div>
+    <p>&copy; 2025 ReWear. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Dynamically generate related items
+    const relatedGrid = document.getElementById("relatedGrid");
+
+    const relatedItems = [
+      { title: "Comfy Knit Sweater", price: "Swap or ₹950", img: "https://m.media-amazon.com/images/I/61BxxTAtUfL._AC_UL480_FMwebp_QL65_.jpg" },
+      { title: "Stylish Black Jeans", price: "Swap or ₹700", img: "https://m.media-amazon.com/images/I/51K4sLsFYTL._AC_UL480_FMwebp_QL65_.jpg" },
+      { title: "Casual White T-shirt", price: "Swap or ₹300", img: "https://m.media-amazon.com/images/I/51zykxMwbZL._AC_UL480_FMwebp_QL65_.jpg" },
+      { title: "Leather Ankle Boots", price: "Swap or ₹1500", img: "https://m.media-amazon.com/images/I/51wUp3hkWLL._AC_UL480_FMwebp_QL65_.jpg" },
+      { title: "Sporty Backpack", price: "Swap or ₹850", img: "https://m.media-amazon.com/images/I/51LJ6bz1RSL._AC_UL480_FMwebp_QL65_.jpg" }
+    ];
+
+    relatedItems.forEach((item) => {
+      const div = document.createElement("div");
+      div.className = "related-item";
+      div.innerHTML = `
+        <img src="${item.img}" alt="${item.title}">
+        <div class="related-item-details">
+          <div class="title">${item.title}</div>
+          <div class="price">${item.price}</div>
+        </div>
+      `;
+      relatedGrid.appendChild(div);
+    });
+
+    function proposeSwap() {
+      alert("Propose Swap button clicked! (This would initiate a swap request)");
+    }
+
+    function addToWishlist() {
+      alert("Add to Wishlist button clicked! (Item added to your wishlist)");
+    }
+  </script>
+
+</body>
+</html>
